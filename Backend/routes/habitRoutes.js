@@ -9,7 +9,6 @@ router.route('/')
   .post(protect, createHabit);
 
 router.route('/:id')
-  .put(protect,  updateHabit)
-  .delete(protect, deleteHabit);
+  .put(protect,  updateHabit);
 
 module.exports = router;
