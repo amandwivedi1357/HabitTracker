@@ -79,7 +79,7 @@ Make sure you have the following installed:
 2. Start the server:
 
    ```bash
-   npm run dev
+   npm run server
    ```
 
    The backend server will run on `http://localhost:${process.env.PORT}`.
@@ -95,7 +95,7 @@ Make sure you have the following installed:
 2. Start the React application:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
    The frontend application will run on `http://localhost:5173`.
