@@ -18,7 +18,8 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "vercel": "^37.13.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
