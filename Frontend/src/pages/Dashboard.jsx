@@ -4,12 +4,14 @@ import { getHabits, createHabit, updateHabit } from '../api';
 import HabitCard from '../components/HabitCard';
 import HabitProgressChart from '../components/HabitProgressChart';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
   const [habits, setHabits] = useState([]);
   const [newHabitName, setNewHabitName] = useState('');
   const [showChart, setShowChart] = useState(false);
   const [chartHeight, setChartHeight] = useState('0px');
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadHabits();
@@ -71,12 +73,26 @@ export default function Dashboard() {
     setChartHeight(showChart ? '0px' : '400px');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   return (
     <div className="bg-gray-100 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold text-gray-900">My Habits</h1>
           <p className="mt-2 text-gray-600">Track your daily progress</p>
+        </div>
+
+        <div className="text-right mb-4">
+          <button
+            onClick={handleLogout}
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Logout
+          </button>
         </div>
 
         <form onSubmit={handleCreateHabit} className="mb-8">

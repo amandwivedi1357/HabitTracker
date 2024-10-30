@@ -1,16 +1,17 @@
-/* eslint-disable react/prop-types */
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
     }
+    setLoading(false); 
   }, []);
 
   const login = (newToken) => {
@@ -24,7 +25,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ token, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
