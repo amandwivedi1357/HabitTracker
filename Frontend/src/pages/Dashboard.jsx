@@ -55,17 +55,16 @@ export default function Dashboard() {
 
   const habitData = habits.reduce((acc, habit) => {
     const date = new Date(habit.createdAt).toLocaleDateString();
-    const completedCount = habit.completed ? 1 : 0;
-
-    if (!acc[date]) {
-      acc[date] = { date, completedCount: 0 };
+    if (habit.completed) {
+      acc[date] = (acc[date] || 0) + 1;
     }
-    acc[date].completedCount += completedCount;
-
     return acc;
   }, {});
 
-  const chartData = Object.values(habitData);
+  const chartData = Object.entries(habitData).map(([date, completedCount]) => ({
+    date,
+    completedCount
+  }));
 
   const toggleChart = () => {
     setShowChart(!showChart);
@@ -73,7 +72,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
+    <div className="bg-gray-100 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold text-gray-900">My Habits</h1>
