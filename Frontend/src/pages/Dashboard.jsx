@@ -115,13 +115,20 @@ export default function Dashboard() {
         </form>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {habits.map((habit) => (
+          {habits.length > 0 ? habits.map((habit) => (
             <HabitCard
               key={habit._id}
               habit={habit}
               onToggle={handleToggleHabit}
             />
-          ))}
+          )) : (
+            <div className="text-center text-gray-600 flex flex-col items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+              </svg>
+              <p>No habits created till now. Create your habits.</p>
+            </div>
+          )}
         </div>
 
         <div className="text-center mb-4">
