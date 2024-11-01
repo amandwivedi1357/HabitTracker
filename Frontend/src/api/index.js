@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //const API_URL = 'https://habittracker-backend-7g97.onrender.com/api';
-const API_URL = 'https://backend-oc4lmq3iw-amandwivedi1357s-projects.vercel.app/api';
+const API_URL = 'https://backend-tau-ten-84.vercel.app//api';
 //const API_URL = 'http://localhost:5000/api';
 
 const api = axios.create({
