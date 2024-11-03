@@ -64,13 +64,13 @@ export default function Auth() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden ${
+    <div className={`min-h-screen  flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden ${
       theme === 'dark' 
         ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700' 
         : 'bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100'
     }`}>
      
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+      <div className="absolute  top-0 left-0 w-full h-full overflow-hidden z-0">
         <div className={`absolute top-1/4 left-1/4 w-64 h-64 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob ${
           theme === 'dark' ? 'bg-indigo-900' : 'bg-indigo-300'
         }`}></div>
@@ -82,7 +82,7 @@ export default function Auth() {
         }`}></div>
       </div>
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
+      <div className="sm:mx-auto  sm:w-full sm:max-w-md z-10">
         <motion.div
           className="flex justify-center"
           initial={{ scale: 0 }}
@@ -123,7 +123,7 @@ export default function Auth() {
         </motion.p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
+      <div className="mt-8 rounded-md sm:mx-auto w-[90%] mx-auto md:w-full sm:max-w-md z-10">
         <motion.div
           className={`py-8 px-4 shadow-2xl sm:rounded-lg sm:px-10 backdrop-filter backdrop-blur-lg ${
             theme === 'dark' 

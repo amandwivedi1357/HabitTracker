@@ -92,18 +92,18 @@ export default function HabitDetails() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="w-full md:w-full max-w-4xl mx-auto sm:px-6 lg:px-8 py-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`rounded-lg shadow-lg p-4 sm:p-6 md:p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
+        className={`rounded-lg  shadow-lg p-2 sm:p-6 md:p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
       >
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
+        <div className="flex   flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
           <div className="mb-4 sm:mb-0">
             <h1 className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{habit.name}</h1>
             
           </div>
-          <div className="flex space-x-2 sm:space-x-4">
+          <div className=" space-x-2 sm:space-x-4">
            
             <button
               onClick={() => setShowDeleteConfirm(true)}
@@ -121,7 +121,7 @@ export default function HabitDetails() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {[
             { icon: Calendar, title: 'Streak', value: `${habit.streak} days` },
-            { icon: Clock, title: 'Completion Rate', value: `${lastProgressUpdate}%` },
+            { icon: Clock, title: 'Completion Rate', value: `${lastProgressUpdate ? lastProgressUpdate : 0}%` },
            
           ].map((item, index) => (
             <div key={index} className={`p-4 sm:p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>

@@ -51,16 +51,7 @@ export default function Dashboard() {
     }
   };
   
-  const handleDeleteHabit = async (id) => {
-    try {
-      await deleteHabit(id);
-      loadHabits();
-      toast.success('Habit deleted successfully');
-    } catch (error) {
-      toast.error('Failed to delete habit');
-      console.error(error);
-    }
-  };
+  
 
   
 
@@ -109,7 +100,7 @@ export default function Dashboard() {
                   transition={{ duration: 0.3 }}
                 >
                   <Link to={`/habits/${habit._id}`}>
-                    <HabitCard habit={habit} onDelete={handleDeleteHabit} />
+                    <HabitCard habit={habit}  />
                   </Link>
                 </motion.div>
               )) : (

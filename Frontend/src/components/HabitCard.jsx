@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { motion } from 'framer-motion'
 import {  Trash2, Zap, Calendar, Clock } from 'lucide-react'
 
-export default function HabitCard({ habit, onDelete }) {
+export default function HabitCard({ habit }) {
   const [isHovered, setIsHovered] = useState(false)
 
   
@@ -20,19 +20,16 @@ export default function HabitCard({ habit, onDelete }) {
     : 0;
 
   const formattedUpdatedAt = new Date(habit.updatedAt).toLocaleString()
-
+//${isHovered ? 'shadow-blue-500' : 'shadow-white'}
   return (
     <div 
-      className={`w-full max-w-md ${isHovered ? 'shadow-lg' : 'shadow-md'} rounded-md border border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg dark:text-gray-100 ${isHovered ? 'shadow-blue-500' : 'shadow-white'}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`w-full max-w-md rounded-md ring-1 ring-blue-500 dark:ring-blue-500 transition-all duration-300 ease-in-out hover:shadow-lg dark:text-gray-100 hover:shadow-blue-500 shadow-white`}
+      
     >
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-bold text-gray-800 dark:text-white">{habit.name}</h3>
-          <button onClick={() => onDelete(habit._id)} className="text-red-500 hover:text-red-700">
-            <Trash2 className="h-5 w-5" />
-          </button>
+         
         </div>
         <div className="mb-4">
           <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
