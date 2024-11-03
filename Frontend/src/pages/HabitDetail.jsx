@@ -126,10 +126,10 @@ export default function HabitDetails() {
           ].map((item, index) => (
             <div key={index} className={`p-4 sm:p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
               <div className="flex items-center mb-2">
-                <item.icon className="h-5 w-5 text-indigo-600 mr-2" />
+                <item.icon className="h-5 w-5 text-blue-600 mr-2" />
                 <h3 className={`text-base sm:text-lg font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{item.title}</h3>
               </div>
-              <p className="text-2xl sm:text-3xl font-bold text-indigo-600">{item.value}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-blue-600">{item.value}</p>
             </div>
           ))}
         </div>
