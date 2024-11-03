@@ -29,7 +29,7 @@
   animation-delay: 4s;
 }
 
-/* Custom scrollbar */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -47,7 +47,7 @@
   background: #818cf8;
 }
 
-/* Tooltip styles */
+
 .react-tooltip {
   background-color: rgba(17, 24, 39, 0.9) !important;
   border-radius: 0.5rem !important;
@@ -58,7 +58,7 @@
     width: 100%;
     height: 400px; 
 }
-/* Add this to your CSS file */
+
 body.light {
   background-color: #ffffff;
   color: #000000;
@@ -148,18 +148,15 @@ body.dark {
   }
 }
 
-/* Add this to your CSS file */
 
-
-/* Add this to your CSS file */
 @media (min-width: 768px) {
   .sidebar {
-    display: block; /* Always show sidebar on larger screens */
+    display: block; 
   }
 }
 
 @media (max-width: 768px) {
   .sidebar {
-    display: none; /* Hide sidebar on smaller screens */
+    display: none; 
   }
 }
