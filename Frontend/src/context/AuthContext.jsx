@@ -3,15 +3,11 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
-    }
-    setLoading(false); 
+    setLoading(false);
   }, []);
 
   const login = (newToken) => {

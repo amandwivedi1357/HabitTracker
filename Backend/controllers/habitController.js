@@ -6,11 +6,12 @@ const getHabits = async (req, res) => {
   try {
     const currentDate = new Date().toLocaleDateString();
 
-   
     if (lastResetDate !== currentDate) {
-      
-      await Habit.updateMany({ userId: req.user._id }, { completed: false });
-      lastResetDate = currentDate; 
+      await Habit.updateMany(
+        { userId: req.user._id, completed: true },
+        { completed: false, progress: 0 } 
+      );
+      lastResetDate = currentDate;
     }
 
     const habits = await Habit.find({ userId: req.user._id });
@@ -37,24 +38,34 @@ const createHabit = async (req, res) => {
 };
 
 const updateHabit = async (req, res) => {
-  const { name, completed } = req.body;
-
- 
-  const currentDate = new Date().toLocaleDateString();
-
-  
-  if (lastResetDate !== currentDate) {
-    
-    await Habit.updateMany({ userId: req.user._id }, { completed: false });
-    lastResetDate = currentDate; 
-  }
+  const { name, progress, completed } = req.body;
 
   try {
     const habit = await Habit.findById(req.params.id);
 
     if (habit) {
-      habit.name = name;
-      habit.completed = completed;
+      if (name) {
+        habit.name = name;
+      }
+
+      habit.updatedAt = new Date();
+
+    
+      const newProgressEntry = {
+        date: new Date().toISOString().split('T')[0], 
+        progress: progress
+      };
+
+      
+      habit.progressLog.push(newProgressEntry);
+
+      
+      if (completed === true) {
+        habit.completed = true;
+        habit.streak += 1; 
+      } else {
+        habit.completed = progress === 100; 
+      }
 
       const updatedHabit = await habit.save();
       res.json({ message: "Success", data: updatedHabit });
@@ -68,4 +79,38 @@ const updateHabit = async (req, res) => {
 
 
 
-module.exports = { getHabits, createHabit, updateHabit };
+const deleteHabit = async (req, res) => {
+    const { id } = req.params; 
+    try {
+        const habit = await Habit.findByIdAndDelete(id);
+        if (!habit) {
+            return res.status(404).json({ message: 'Habit not found' }); 
+        }
+        res.status(204).send(); 
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getHabitById = async (req, res) => {
+  const { id } = req.params; 
+
+  try {
+    const habit = await Habit.findById(id); 
+
+    if (!habit) {
+      return res.status(404).json({ message: 'Habit not found' }); 
+    }
+
+  
+    if (habit.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Unauthorized access' }); 
+    }
+
+    res.json(habit); 
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving habit', error: error.message });
+  }
+};
+
+module.exports = { getHabits, createHabit, updateHabit, deleteHabit, getHabitById };

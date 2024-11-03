@@ -1,150 +1,133 @@
-import { useState, useEffect } from 'react';
-import { Plus } from 'lucide-react';
-import { getHabits, createHabit, updateHabit } from '../api';
+import  { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { getHabits, deleteHabit } from '../api';
 import HabitCard from '../components/HabitCard';
-import HabitProgressChart from '../components/HabitProgressChart';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
+
+const AnimatedBackground = () => {
+  const { theme } = useTheme();
+  
+  return (
+    <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+      {theme === 'light' ? (
+        <>
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        </>
+      ) : (
+        <>
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-indigo-900 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-purple-900 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-pink-900 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+        </>
+      )}
+    </div>
+  );
+};
 
 export default function Dashboard() {
   const [habits, setHabits] = useState([]);
-  const [newHabitName, setNewHabitName] = useState('');
-  const [showChart, setShowChart] = useState(false);
-  const [chartHeight, setChartHeight] = useState('0px');
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   useEffect(() => {
     loadHabits();
   }, []);
 
   const loadHabits = async () => {
+    setIsLoading(true);
     try {
       const data = await getHabits();
       setHabits(data);
     } catch (error) {
       toast.error('Failed to load habits');
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  const handleCreateHabit = async (e) => {
-    e.preventDefault();
-    if (!newHabitName.trim()) return;
-
+  
+  const handleDeleteHabit = async (id) => {
     try {
-      const newHabit = await createHabit(newHabitName);
-      setHabits([...habits, newHabit.data]);
-      setNewHabitName('');
-      toast.success('Habit created successfully');
+      await deleteHabit(id);
+      loadHabits();
+      toast.success('Habit deleted successfully');
     } catch (error) {
-      toast.error('Failed to create habit');
+      toast.error('Failed to delete habit');
+      console.error(error);
     }
   };
 
-  const handleToggleHabit = async (id, completed) => {
-    try {
-      const habitToUpdate = habits.find(habit => habit._id === id);
-      await updateHabit(id, habitToUpdate.name, completed);
-      setHabits(
-        habits.map((habit) =>
-          habit._id === id ? { ...habit, completed } : habit
-        )
-      );
-      toast.success('Habit updated successfully');
-    } catch (error) {
-      toast.error('Failed to update habit');
-    }
-  };
-
-  const habitData = habits.reduce((acc, habit) => {
-    const date = new Date(habit.createdAt).toLocaleDateString();
-    if (habit.completed) {
-      acc[date] = (acc[date] || 0) + 1;
-    }
-    return acc;
-  }, {});
-
-  const chartData = Object.entries(habitData).map(([date, completedCount]) => ({
-    date,
-    completedCount
-  }));
-
-  const toggleChart = () => {
-    setShowChart(!showChart);
-    setChartHeight(showChart ? '0px' : '400px');
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
+  
 
   return (
-    <div className="bg-gray-100 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900">Habits Tracker</h1>
-          <p className="mt-2 text-gray-600">Track your daily progress</p>
-        </div>
-
-        <div className="text-right mb-4">
-          <button
-            onClick={handleLogout}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-          >
-            Logout
-          </button>
-        </div>
-
-        <form onSubmit={handleCreateHabit} className="mb-8">
-          <div className="flex gap-4 justify-center">
-            <input
-              type="text"
-              placeholder="Enter a new habit..."
-              value={newHabitName}
-              onChange={(e) => setNewHabitName(e.target.value)}
-              className="flex-1 p-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            />
-            <button
-              type="submit"
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Add Habit
-            </button>
-          </div>
-        </form>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {habits.length > 0 ? habits.map((habit) => (
-            <HabitCard
-              key={habit._id}
-              habit={habit}
-              onToggle={handleToggleHabit}
-            />
-          )) : (
-            <div className="text-center text-gray-600 flex flex-col items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-              </svg>
-              <p>No habits created till now. Create your habits.</p>
-            </div>
-          )}
-        </div>
-
-        <div className="text-center mb-4">
-          <button
-            onClick={toggleChart}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            {showChart ? 'Hide Chart' : 'Show Chart'}
-          </button>
-        </div>
-
-        <div
-          style={{ height: chartHeight, overflow: 'hidden', transition: 'height 0.5s ease' }}
+    <div className={`min-h-screen relative overflow-hidden ${
+      theme === 'dark' 
+        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700' 
+        : 'bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100'
+    }`}>
+      <AnimatedBackground />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="py-12 text-center"
         >
-          {showChart && <HabitProgressChart habitData={chartData} />}
-        </div>
+          <h1 className="md:text-5xl text-2xl  font-bold text-gray-900 dark:text-white mb-2">Habits Tracker</h1>
+          <p className="md:text-xl text-lg text-gray-600 dark:text-gray-300">Track your daily progress and build better habits</p>
+        </motion.div>
+
+       
+        <AnimatePresence>
+          {isLoading ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex justify-center items-center h-64"
+            >
+              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-500 dark:border-indigo-400"></div>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+            >
+              {habits.length > 0 ? habits.map((habit) => (
+                <motion.div
+                  key={habit._id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Link to={`/habits/${habit._id}`}>
+                    <HabitCard habit={habit} onDelete={handleDeleteHabit} />
+                  </Link>
+                </motion.div>
+              )) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  onClick={()=>navigate('/add-habit')}
+                  className="col-span-full text-center cursor-pointer  text-gray-600 dark:text-gray-300 flex flex-col items-center justify-center bg-white dark:bg-gray-800 bg-opacity-50 dark:bg-opacity-50 rounded-lg p-8 backdrop-filter backdrop-blur-lg"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                  <p className="text-xl">No habits created yet. Start building better habits today!</p>
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

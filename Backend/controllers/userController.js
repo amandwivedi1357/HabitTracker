@@ -35,21 +35,21 @@ const authUser = async (req, res) => {
   const { email, password } = req.body;
   
   try {
-    // Check if user exists
+   
     const user = await User.findOne({ email });
     
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    // Check if password matches
+   
     const isMatch = await bcrypt.compare(password, user.password);
     
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    // Return user data and token if login is successful
+   
     res.status(200).json({
       message:"Success",
       _id: user._id,

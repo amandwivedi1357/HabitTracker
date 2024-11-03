@@ -20,28 +20,67 @@ api.interceptors.request.use((config) => {
 });
 
 export const login = async (email, password) => {
-  const response = await api.post('/auth/login', { email, password });
-  return response.data;
+  try {
+    const response = await api.post('/auth/login', { email, password });
+    return response.data;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
+  }
 };
 
 export const signup = async (username, email, password) => {
-  const response = await api.post('/auth/signup', { username, email, password });
-  return response.data;
+  try {
+    const response = await api.post('/auth/signup', { username, email, password });
+    return response.data;
+  } catch (error) {
+    console.error('Signup error:', error);
+    throw error;
+  }
 };
 
 export const getHabits = async () => {
-  const response = await api.get('/habits');
+  try {
+    const response = await api.get('/habits');
+    return response.data;
+  } catch (error) {
+    console.error('Get habits error:', error);
+    throw error;
+  }
+};
+export const getHabitById = async (id) => {
+  const response = await api.get(`/habits/${id}`);
   return response.data;
 };
 
 export const createHabit = async (name) => {
-  const response = await api.post('/habits', { name });
-  return response.data;
+  try {
+    const response = await api.post('/habits', { name });
+    return response.data;
+  } catch (error) {
+    console.error('Create habit error:', error);
+    throw error;
+  }
 };
 
-export const updateHabit = async (id, name, completed) => {
-  const response = await api.put(`/habits/${id}`, { name, completed });
-  return response.data;
+export const updateHabit = async (id, habitData) => {
+  try {
+    const response = await api.put(`/habits/${id}`, habitData);
+    return response.data;
+  } catch (error) {
+    console.error('Update habit error:', error);
+    throw error;
+  }
+};
+
+export const deleteHabit = async (id) => {
+  try {
+    const response = await api.delete(`/habits/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Delete habit error:', error);
+    throw error;
+  }
 };
 
 export default api;

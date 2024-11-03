@@ -1,6 +1,6 @@
 const express = require('express');
-const { getHabits, createHabit, updateHabit, deleteHabit } = require('../controllers/habitController');
-const { protect } = require('../middleware/Authmiddleware');
+const { getHabits, createHabit, updateHabit, deleteHabit, getHabitById } = require('../controllers/habitController');
+const { protect } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -9,6 +9,8 @@ router.route('/')
   .post(protect, createHabit);
 
 router.route('/:id')
-  .put(protect,  updateHabit);
+.get(protect,getHabitById)
+  .delete(protect, deleteHabit)
+  .put(protect, updateHabit);
 
 module.exports = router;
