@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, PlusCircle, LogOut, Moon, Sun, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 export default function Sidebar({ isOpen, onClose, isMobile }) {
   const navItems = [
@@ -10,6 +11,7 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
     { to: '/add-habit', icon: PlusCircle, label: 'Add Habit' },
   ];
   const { theme, toggleTheme } = useTheme();
+  const { token } = useAuth();
 
   const sidebarVariants = {
     open: { x: 0, transition: { type: 'spring', stiffness: 300, damping: 30 } },
@@ -64,23 +66,25 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
           {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
         </button>
         
-        <button 
-          onClick={() => {
-            localStorage.removeItem('token');
-            window.location.href = '/login';
-          }}
-          className="flex items-center w-full px-4 py-2 mt-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 rounded-lg transition-colors"
-        >
-          <LogOut className="h-5 w-5 mr-3" />
-          Logout
-        </button>
+        {token && (
+          <button 
+            onClick={() => {
+              localStorage.removeItem('token');
+              window.location.href = '/login';
+            }}
+            className="flex items-center w-full px-4 py-2 mt-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 rounded-lg transition-colors"
+          >
+            <LogOut className="h-5 w-5 mr-3" />
+            Logout
+          </button>
+        )}
       </div>
     </div>
   );
 
   return (
     <>
-      {/* Overlay for mobile */}
+      
       {isMobile && (
         <AnimatePresence>
           {isOpen && (
@@ -96,14 +100,14 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
         </AnimatePresence>
       )}
 
-      {/* Permanent sidebar for desktop */}
+      
       {!isMobile && (
         <div className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 bg-opacity-90 backdrop-blur-lg shadow-lg z-50">
           {sidebarContent}
         </div>
       )}
 
-      {/* Animated sidebar for mobile */}
+      
       {isMobile && (
         <AnimatePresence>
           {isOpen && (

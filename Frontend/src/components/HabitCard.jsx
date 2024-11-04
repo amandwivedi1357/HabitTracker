@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import  { useState } from 'react'
 import { motion } from 'framer-motion'
-import {  Trash2, Zap, Calendar, Clock } from 'lucide-react'
+import {   Zap, Calendar, Clock } from 'lucide-react'
 
 export default function HabitCard({ habit }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -20,7 +20,7 @@ export default function HabitCard({ habit }) {
     : 0;
 
   const formattedUpdatedAt = new Date(habit.updatedAt).toLocaleString()
-//${isHovered ? 'shadow-blue-500' : 'shadow-white'}
+
   return (
     <div 
       className={`w-full max-w-md rounded-md ring-1 ring-blue-500 dark:ring-blue-500 transition-all duration-300 ease-in-out hover:shadow-lg dark:text-gray-100 hover:shadow-blue-500 shadow-white`}
