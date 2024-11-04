@@ -107,6 +107,7 @@ Make sure you have the following installed:
 - **GET** `/api/habits` - Get all habits
 - **POST** `/api/habits` - Create a new habit
 - **PUT** `/api/habits/:id` - Update a habit
+- **DELETE** `/api/habits/:id` - Delete a habit
 
 
 ### Authentication
