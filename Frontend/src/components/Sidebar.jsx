@@ -26,7 +26,7 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
           <button
             onClick={onClose}
             className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
-            aria-label="Close sidebar"
+            
           >
             <X className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>
@@ -61,7 +61,7 @@ export default function Sidebar({ isOpen, onClose, isMobile }) {
               ? 'bg-gray-700 hover:bg-gray-600 text-yellow-300'
               : 'bg-indigo-200 hover:bg-indigo-300 text-gray-800'
           }`}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          
         >
           {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
         </button>

@@ -43,7 +43,7 @@ function Main() {
           <button
             onClick={toggleSidebar}
             className="md:hidden p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
-            aria-label="Toggle sidebar"
+            
           >
             <Menu className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>
