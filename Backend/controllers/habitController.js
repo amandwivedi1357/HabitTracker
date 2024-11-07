@@ -44,27 +44,28 @@ const updateHabit = async (req, res) => {
     const habit = await Habit.findById(req.params.id);
 
     if (habit) {
+      if (habit.completed) {
+        return res.status(400).json({ message: 'Habit is already completed and cannot be updated' });
+      }
+
       if (name) {
         habit.name = name;
       }
 
       habit.updatedAt = new Date();
 
-    
       const newProgressEntry = {
-        date: new Date().toISOString().split('T')[0], 
+        date: new Date().toISOString().split('T')[0],
         progress: progress
       };
 
-      
       habit.progressLog.push(newProgressEntry);
 
-      
       if (completed === true) {
         habit.completed = true;
-        habit.streak += 1; 
+        habit.streak += 1;
       } else {
-        habit.completed = progress === 100; 
+        habit.completed = progress === 100;
       }
 
       const updatedHabit = await habit.save();

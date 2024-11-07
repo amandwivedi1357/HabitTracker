@@ -5,6 +5,7 @@ import HabitCard from '../components/HabitCard';
 import toast from 'react-hot-toast';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { useMemo } from 'react';
 
 const AnimatedBackground = () => {
   const { theme } = useTheme();
@@ -37,7 +38,11 @@ export default function Dashboard() {
   useEffect(() => {
     loadHabits();
   }, []);
+  //useEffe(()=>{
+    //console.log(parent)
+    //})
 
+    
   const loadHabits = async () => {
     setIsLoading(true);
     try {

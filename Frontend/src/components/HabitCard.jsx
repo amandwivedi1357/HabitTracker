@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import  { useState } from 'react'
 import { motion } from 'framer-motion'
-import {   Zap, Calendar, Clock } from 'lucide-react'
+import { Zap, Calendar, Clock } from 'lucide-react'
 
 export default function HabitCard({ habit }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -23,9 +23,10 @@ export default function HabitCard({ habit }) {
 
   return (
     <div 
-      className={`w-full max-w-md rounded-md ring-1 ring-blue-500 dark:ring-blue-500 transition-all duration-300 ease-in-out hover:shadow-lg dark:text-gray-100 hover:shadow-blue-500 shadow-white`}
+      className={`w-full relative max-w-md rounded-md ring-1 ring-blue-500 dark:ring-blue-500 transition-all duration-300 ease-in-out hover:shadow-lg dark:text-gray-100 hover:shadow-blue-500 shadow-white`}
       
     >
+     
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-bold text-gray-800 dark:text-white">{habit.name}</h3>

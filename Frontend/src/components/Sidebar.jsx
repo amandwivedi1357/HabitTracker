@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, PlusCircle, LogOut, Moon, Sun, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';

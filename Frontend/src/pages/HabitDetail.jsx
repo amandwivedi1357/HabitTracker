@@ -196,12 +196,13 @@ export default function HabitDetails() {
                 key={progress}
                 onClick={() => handleProgressUpdate(progress)}
                 className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  lastProgressUpdate === progress
-                    ? 'bg-indigo-600 text-white'
+                  lastProgressUpdate === progress || habit.completed
+                    ? 'bg-indigo-600 text-white cursor-not-allowed'
                     : theme === 'dark'
                     ? 'bg-gray-700 text-gray-200 hover:bg-gray-600'
                     : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                 }`}
+                disabled={habit.completed}
               >
                 {progress}%
               </button>
